@@ -1,0 +1,21 @@
+# Virtual environments
+.venv/
+.venv311/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+
+# Generated data
+data/raw/
+data/chunks/
+data/embeddings/
+
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/

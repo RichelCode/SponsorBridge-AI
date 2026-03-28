@@ -1,17 +1,48 @@
 from pathlib import Path
 import json
+import re
 
 INPUT_DIR = Path("data/clean")
 OUTPUT_DIR = Path("data/chunks")
 
 
-def split_into_chunks(text: str, chunk_size: int = 500) -> list:
+NOISE_PATTERNS = [
+    r"Skip to main content",
+    r"Privacy and security",
+    r"Terms and conditions",
+    r"Cookies",
+    r"Accessibility",
+    r"All rights reserved",
+    r"Equal Opportunity Employer",
+    r"Search JPMorganChase",
+    r"Search",
+    r"Join our team",
+]
+
+
+def clean_text_for_chunking(text: str) -> str:
+    text = re.sub(r"\s+", " ", text).strip()
+
+    for pattern in NOISE_PATTERNS:
+        text = re.sub(pattern, "", text, flags=re.IGNORECASE)
+
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def split_into_chunks(text: str, chunk_size: int = 120, overlap: int = 30) -> list:
     words = text.split()
     chunks = []
 
-    for i in range(0, len(words), chunk_size):
-        chunk = " ".join(words[i:i + chunk_size])
-        chunks.append(chunk)
+    start = 0
+    while start < len(words):
+        end = start + chunk_size
+        chunk = " ".join(words[start:end]).strip()
+
+        if chunk:
+            chunks.append(chunk)
+
+        start += chunk_size - overlap
 
     return chunks
 
@@ -26,7 +57,8 @@ def process_file(file_path: Path) -> None:
     url = data.get("url")
     text = data.get("text", "")
 
-    chunks = split_into_chunks(text)
+    cleaned_text = clean_text_for_chunking(text)
+    chunks = split_into_chunks(cleaned_text)
 
     output_data = []
 
