@@ -1,6 +1,6 @@
 # Learning Log
 
-## Day 1
+## Day 1 — Setup
 
 - Installed VS Code
 - Installed Python
@@ -8,10 +8,126 @@
 - Created project structure
 
 ### What I understand
-VS Code is my coding workspace.
-Python is what runs my code.
-Git helps me save and track my progress.
+VS Code is my coding workspace.  
+Python runs my code.  
+Git helps me track and save my progress.
 
-### What I’m still learning
-- How everything connects together
-- How to start writing actual code
+---
+
+## Day 2 — Web Scraping Pipeline
+
+### What I built
+
+I built a pipeline that:
+1. Fetches web pages using Python
+2. Saves raw HTML
+3. Cleans HTML into readable text
+4. Stores structured JSON data
+
+### Key concepts I learned
+
+#### 1. HTTP Requests
+- Used `requests.get()` to fetch web pages
+- Learned about SSL errors and how to debug them
+
+#### 2. Raw vs Clean Data
+- `data/raw/` stores original HTML
+- `data/clean/` stores processed readable text
+- Important for debugging and reproducibility
+
+#### 3. HTML Parsing
+- Used BeautifulSoup to parse HTML
+- Removed `<script>`, `<style>`, and `<noscript>` tags
+- Extracted visible text and titles
+
+#### 4. Data Pipeline Thinking
+- Broke process into steps:
+  fetch → clean → save
+- Each function does one clear job
+
+---
+
+## Day 3 — Scaling with Multiple Companies
+
+### What I built
+
+- Created a CSV file (`company_targets.csv`) to control scraping
+- Built a system that reads URLs from CSV instead of hardcoding
+- Processed multiple company pages automatically
+
+### Key concepts
+
+#### 1. CSV as Control Layer
+- CSV acts as a configuration file
+- Controls which companies and pages to scrape
+- Enables scalability
+
+#### 2. Automation
+- Instead of scraping one page manually
+- The system loops through multiple companies
+
+#### 3. Metadata
+- Added:
+  - company name
+  - page type (about, careers, students)
+  - URL
+- Makes data more structured and meaningful
+
+---
+
+## Day 4 — Preparing Data for AI (Chunking)
+
+### What I built
+
+- Split long text into smaller chunks
+- Saved chunked data into `data/chunks/`
+
+### Key concepts
+
+#### 1. Why Chunking?
+- Large text is hard for models to process
+- Smaller chunks improve retrieval accuracy
+
+#### 2. Chunking Strategy
+- Split text into fixed-size word groups
+- Each chunk gets:
+  - company
+  - page type
+  - chunk_id
+
+#### 3. AI Readiness
+- Chunking is required for:
+  - embeddings
+  - retrieval systems (RAG)
+
+---
+
+## Day 5 — Embeddings (Turning Text into Meaning)
+
+### What I built
+
+- Used `sentence-transformers` model
+- Converted text chunks into embeddings (vectors)
+- Saved embeddings into `data/embeddings/`
+
+### Key concepts
+
+#### 1. What is an Embedding?
+- A numerical representation of text
+- Captures semantic meaning (not just keywords)
+
+#### 2. Why Embeddings Matter
+- Allows similarity search
+- Enables the system to find relevant answers
+
+#### 3. Pipeline Extension
+- chunk → embedding → saved vector
+
+---
+
+## Big Picture Understanding
+
+### Full Pipeline
+
+```text
+Website → HTML → Clean Text → JSON → Chunks → Embeddings
