@@ -1,0 +1,24 @@
+company,sector,homepage_url,about_url,careers_url,students_url,priority,status
+Microsoft,Big Tech,https://www.microsoft.com/,https://www.microsoft.com/en-us/about,https://careers.microsoft.com/us/en,,1,to_scrape
+Google,Big Tech,https://www.google.com/,https://www.google.com/about/,https://www.google.com/about/careers/applications/,,1,to_scrape
+Amazon,Big Tech,https://www.amazon.com/,https://www.amazon.com/about,https://www.amazon.jobs/en/,,1,to_scrape
+IBM,Big Tech,https://www.ibm.com/,https://www.ibm.com/about,https://www.ibm.com/careers,,1,to_scrape
+JPMorgan Chase,Finance,https://www.jpmorganchase.com/,https://www.jpmorganchase.com/about,https://careers.jpmorgan.com/us/en,https://careers.jpmorgan.com/us/en/students,1,to_scrape
+Salesforce,Big Tech,,,,1,to_verify
+Adobe,Big Tech,,,,1,to_verify
+NVIDIA,Big Tech,,,,1,to_verify
+Deloitte,Consulting,,,,1,to_verify
+Accenture,Consulting,,,,1,to_verify
+Infosys,Consulting,,,,1,to_verify
+TCS,Consulting,,,,1,to_verify
+Capital One,Finance,,,,1,to_verify
+Visa,Finance,,,,1,to_verify
+Mastercard,Finance,,,,1,to_verify
+Pfizer,Healthcare,,,,1,to_verify
+Johnson & Johnson,Healthcare,,,,1,to_verify
+Intel,Semiconductors,,,,1,to_verify
+Qualcomm,Semiconductors,,,,1,to_verify
+ServiceNow,Software,,,,1,to_verify
+Workday,Software,,,,1,to_verify
+Databricks,Software,,,,1,to_verify
+Snowflake,Software,,,,1,to_verify
