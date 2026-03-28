@@ -101,14 +101,12 @@ def generate_answer(prompt: str, tokenizer, model) -> str:
     outputs = model.generate(
         **inputs,
         max_new_tokens=120,
-        do_sample=False,
-        temperature=0.0
+        do_sample=False
     )
 
     answer = tokenizer.decode(outputs[0], skip_special_tokens=True).strip()
     return answer
-
-
+    
 def main():
     print("Loading embedding model...")
     embed_model = SentenceTransformer(EMBED_MODEL_NAME)

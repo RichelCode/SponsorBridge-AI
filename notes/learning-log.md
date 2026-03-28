@@ -131,3 +131,27 @@ I built a pipeline that:
 
 ```text
 Website → HTML → Clean Text → JSON → Chunks → Embeddings
+
+---
+
+## Day 6 — Retrieval and Answer Generation
+
+### What I built
+
+- Built a semantic retrieval system using embeddings and cosine similarity
+- Allowed a user question to be converted into an embedding and compared against stored chunk embeddings
+- Returned the most relevant chunks as context
+- Added an answer generation step using a transformer model
+
+### Key concepts I learned
+
+#### 1. Retrieval
+- Retrieval is the process of finding the most relevant text chunks for a user question
+- I used cosine similarity to compare the embedding of the question with stored chunk embeddings
+- Higher similarity means the chunk is more relevant
+
+#### 2. RAG pipeline structure
+My system now follows this flow:
+
+```text
+Website → Clean Text → Chunks → Embeddings → Retrieval → Generated Answer
