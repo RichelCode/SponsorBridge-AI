@@ -155,3 +155,24 @@ My system now follows this flow:
 
 ```text
 Website → Clean Text → Chunks → Embeddings → Retrieval → Generated Answer
+
+---
+
+## Day 7 — Full-Stack Integration and UI
+
+### What I built
+
+- Built a Gradio-based UI for asking questions and viewing sources
+- Upgraded the project to use a stronger Hugging Face generation model
+- Added support for audio input preparation using a Hugging Face speech-to-text model
+- Created a FastAPI backend with a real `/ask` endpoint
+- Connected a Lovable-generated frontend UI to the FastAPI backend
+- Began debugging frontend-to-backend rendering and state mapping
+
+### Key concepts I learned
+
+#### 1. Full-stack AI architecture
+My system is no longer just a script. It now has:
+
+```text
+Frontend UI → FastAPI backend → retrieval pipeline → answer generation

@@ -5,12 +5,19 @@ import gradio as gr
 
 from sentence_transformers import SentenceTransformer
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
 
 EMBEDDINGS_DIR = Path("data/embeddings")
 
 EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
-GEN_MODEL_NAME = "google/flan-t5-small"
+GEN_MODEL_NAME = "google/flan-t5-base"
+ASR_MODEL_NAME = "openai/whisper-base"
 
+print("Loading ASR model...")
+asr_model = pipeline(
+    "automatic-speech-recognition",
+    model=ASR_MODEL_NAME
+)
 
 print("Loading embedding model...")
 embed_model = SentenceTransformer(EMBED_MODEL_NAME)
@@ -21,6 +28,12 @@ tokenizer = AutoTokenizer.from_pretrained(GEN_MODEL_NAME)
 print("Loading generation model...")
 gen_model = AutoModelForSeq2SeqLM.from_pretrained(GEN_MODEL_NAME)
 
+def transcribe_audio(audio_path: str) -> str:
+    if not audio_path:
+        return ""
+
+    result = asr_model(audio_path)
+    return result["text"].strip()
 
 def load_all_embeddings():
     all_items = []
@@ -144,40 +157,49 @@ def format_sources(results) -> str:
     return "\n".join(lines)
 
 
-def ask_question(question: str):
-    if not question.strip():
-        return "Please enter a question.", ""
+def ask_question(question: str, audio):
+    typed_question = (question or "").strip()
+    spoken_question = transcribe_audio(audio) if audio else ""
 
-    results = search(question, ALL_ITEMS, top_k=3)
+    final_question = typed_question if typed_question else spoken_question
+
+    if not final_question:
+        return "Please enter a question or record audio.", "", ""
+
+    results = search(final_question, ALL_ITEMS, top_k=3)
     context = build_context(results)
-    prompt = build_prompt(question, context)
+    prompt = build_prompt(final_question, context)
 
     answer = generate_answer(prompt)
 
-    # fallback if model gives weak output
     if len(answer.strip()) < 20:
         answer = "The retrieved information suggests that companies provide student and early career opportunities, but more detailed context is needed."
 
     sources = format_sources(results)
 
-    return answer, sources
-
+    return final_question, answer, sources
 
 demo = gr.Interface(
     fn=ask_question,
-    inputs=gr.Textbox(
-        lines=3,
-        placeholder="Ask something like: What information is available about JPMorgan Chase student opportunities?",
-        label="Your Question"
-    ),
+    inputs=[
+        gr.Textbox(
+            lines=3,
+            placeholder="Ask something like: What information is available about JPMorgan Chase student opportunities?",
+            label="Your Question"
+        ),
+        gr.Audio(
+            sources=["microphone"],
+            type="filepath",
+            label="Optional Voice Question"
+        )
+    ],
     outputs=[
+        gr.Textbox(label="Question Used"),
         gr.Textbox(label="Answer"),
         gr.Textbox(label="Sources")
     ],
     title="SponsorBridge AI",
     description="A simple RAG assistant for exploring company information relevant to international students."
 )
-
-
 if __name__ == "__main__":
     demo.launch()
